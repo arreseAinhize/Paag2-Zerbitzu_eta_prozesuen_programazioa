@@ -22,7 +22,7 @@ public class BaliabidePartekatua  {
         errezetak.add(new Errezeta("Kroketa", "Bexamela eta buskentza"));
         errezetak.add(new Errezeta("Karbonara","Espagetiak, arrautza , guanciale eta gazta"));
         errezetak.add(new Errezeta("Kafesnea","Kafea eta esnea"));
-        errezetak.add(new Errezeta("San Blas","Irina, rrautza, legamia, azukrea, ANIS eta limoia"));
+        errezetak.add(new Errezeta("SanBlas","Irina, rrautza, legamia, azukrea, ANIS eta limoia"));
     }
         
     public synchronized int getId(){

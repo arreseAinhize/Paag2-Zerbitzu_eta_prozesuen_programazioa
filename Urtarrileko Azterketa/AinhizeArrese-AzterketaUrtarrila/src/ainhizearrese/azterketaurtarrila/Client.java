@@ -38,8 +38,6 @@ public class Client {
                 System.out.println(heldutakoMsg);
                 amaituta = true;
                 break;
-            }else if(heldutakoMsg.contains("")){
-            
             }else{ // Datuak bistaratu soilik
                 System.out.println(heldutakoMsg);
             }

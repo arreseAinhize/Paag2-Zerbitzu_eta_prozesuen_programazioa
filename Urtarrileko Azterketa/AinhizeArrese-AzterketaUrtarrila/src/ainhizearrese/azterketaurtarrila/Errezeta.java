@@ -41,6 +41,6 @@ public class Errezeta  {
     
     @Override
     public String toString(){
-       return "Errezeta: " + this.getName() + "-ren edukia: " + this.edukia + "\n";
+       return "Errezeta: " + this.getName() + "-ren edukia --> " + this.edukia + "\n";
     }
 }

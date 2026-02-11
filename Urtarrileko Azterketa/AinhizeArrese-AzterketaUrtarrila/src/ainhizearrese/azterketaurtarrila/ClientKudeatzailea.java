@@ -39,58 +39,44 @@ public class ClientKudeatzailea implements Runnable { // Cliente bakoitzak arian
             String hasieraMsg = "Sartu egin nahi duzun aukera zenbaki? ||  1- List || 2- Get || 3- Put || 4-Quit ||"; 
             int clientErantzuna;
 
-            msgBidali.println(hasieraMsg);
-            
-            
-            
-            clientErantzuna = Integer.valueOf(sarrearString.readLine());
-                        
             boolean aurrera = true; // Bukleak guk nahi izan harte aurrera jarraitzeko
             
             while (aurrera){ 
+                msgBidali.println(hasieraMsg);
+                clientErantzuna = Integer.valueOf(sarrearString.readLine());
+
                 switch(clientErantzuna){
-                    case 1: // List
-                        
-                        /*String errezetakStr = bp.errezetak.toString(); // Errezetak
-                        msgBidali.println(errezetakStr); // ein ahalko zan dala linea baten [msgBidali.println(bp.errezetak.toString());] , baina holan hobeto ulertzen dot nire burue.
-                        */
-                        
-                        String errezetaSrt = "Errezeta lista:\n";
+                    case 1: // List                      
+                        msgBidali.println("Errezeta lista:");
                         for(int i = 0; i < bp.errezetak.size(); i++){
-                            errezetaSrt += "" + i + "- " + bp.errezetak.get(i).getName() + "\n";
-                            
+                            String errezetaSrt = "" + i + "- " + bp.errezetak.get(i).getName() + "";
+                            msgBidali.println(errezetaSrt);
                         }
-                        errezetaSrt += "Bukaera";
-                        msgBidali.write(errezetaSrt);
-                        msgBidali.flush();
+                        
                         bp.getkList();
                         bp.getBezeroData(); // Bezeroaren egoera eguneratzeko
                         break;
                         
-                    case 2: // Get
+                    case 2: // Get                      
                         msgBidali.println("Sartu bilatzeko errezeta izena: ");
                         String bilatuErrezeta = sarrearString.readLine();
-                        bp.getkGet();
                         
-                        Errezeta bidaliErrezeta = new Errezeta();
                         for (Errezeta errezeta : bp.errezetak){
                             if(errezeta.getName().equals(bilatuErrezeta)){
-                                bidaliErrezeta = errezeta;
-                                msgBidali.println(bidaliErrezeta);
-                                msgBidali.flush();
-                                bp.getBezeroData(); // Bezeroaren egoera eguneratzeko
+                                msgBidali.println(errezeta);
+                                bp.getkGet();
+                                bp.getBezeroData();
                                 break;
                             }
-                        }
+                        }                        
                         
                         msgBidali.println("Ez da errezeta existitzen");
-                        msgBidali.flush();
+                        
+                        bp.getkGet();
                         bp.getBezeroData(); // Bezeroaren egoera eguneratzeko
                         break;
                         
                     case 3: // Put
-                        bp.getkPut();
-                        
                         msgBidali.println("Sartu Errezeta berriaren izena: ");
                         String nameErrezeta = sarrearString.readLine();
                         
@@ -100,6 +86,7 @@ public class ClientKudeatzailea implements Runnable { // Cliente bakoitzak arian
                         Errezeta errBerria = new Errezeta(nameErrezeta,edukiaErrezeta);
                         
                         bp.errezetak.add(errBerria);
+                        bp.getkPut();
                         bp.getBezeroData(); // Bezeroaren egoera eguneratzeko
                         break;
                         
@@ -108,6 +95,9 @@ public class ClientKudeatzailea implements Runnable { // Cliente bakoitzak arian
                         msgBidali.println("Agur!");
                         bp.getBezeroData(); // Bezeroaren egoera eguneratzeko
                         clientSocket.close();
+                        break;
+                    default:
+                        msgBidali.println("Aukera hori ez da posible");
                         break;
                 }
             }
