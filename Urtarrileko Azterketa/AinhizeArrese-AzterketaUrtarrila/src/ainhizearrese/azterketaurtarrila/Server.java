@@ -15,18 +15,17 @@ import ainhizearrese.azterketaurtarrila.Errezeta;
 public class Server {
     
     public static List<Errezeta> errezetak = new ArrayList<>(); 
-        {
-            errezetak.add(new Errezeta("Kroketa", "Bexamela eta buskentza"));
-            errezetak.add(new Errezeta("Karbonara","Espagetiak, arrautza , guanciale eta gazta"));
-            errezetak.add(new Errezeta("Kafesnea","Kafea eta esnea"));
-        }
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         final int port = 11111;
         int bId = 0;
-                
+        
+        errezetak.add(new Errezeta("Kroketa", "Bexamela eta buskentza"));
+        errezetak.add(new Errezeta("Karbonara","Espagetiak, arrautza , guanciale eta gazta"));
+        errezetak.add(new Errezeta("Kafesnea","Kafea eta esnea")); 
+        
         try{
             InetAddress serverHost = InetAddress.getLocalHost();
             System.out.println("Zerbitzaria " + serverHost + ":" + port + " helbidean entzuten ari da.");
