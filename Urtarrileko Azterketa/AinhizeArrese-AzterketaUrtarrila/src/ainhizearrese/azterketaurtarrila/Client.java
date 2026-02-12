@@ -32,7 +32,7 @@ public class Client {
             
             if(heldutakoMsg.contains("Sartu")){ // Datuak sartzeko mezua heltzen bada
                 System.out.println(heldutakoMsg);
-                String errStr = scanner.next(); // errStr <= Errezeta String
+                String errStr = scanner.nextLine(); // errStr <= Errezeta String
                 msgBidali.println(errStr);
             }else if (heldutakoMsg.contains("Agur")){ // Bukaera mezua heldu da.
                 System.out.println(heldutakoMsg);

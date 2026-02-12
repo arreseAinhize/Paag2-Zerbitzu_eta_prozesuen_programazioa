@@ -43,7 +43,7 @@ public class ClientKudeatzailea implements Runnable { // Cliente bakoitzak arian
             
             while (aurrera){ 
                 msgBidali.println(hasieraMsg);
-                clientErantzuna = Integer.valueOf(sarrearString.readLine());
+                clientErantzuna = Integer.parseInt(sarrearString.readLine());
 
                 switch(clientErantzuna){
                     case 1: // List                      
