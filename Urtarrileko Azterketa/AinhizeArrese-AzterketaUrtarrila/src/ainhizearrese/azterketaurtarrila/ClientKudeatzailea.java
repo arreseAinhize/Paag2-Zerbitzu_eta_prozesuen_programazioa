@@ -7,6 +7,7 @@ package ainhizearrese.azterketaurtarrila;
 import java.io.*;
 import java.net.*;
 import ainhizearrese.azterketaurtarrila.Errezeta;
+import java.util.List;
 
 /**
  *
@@ -18,11 +19,13 @@ public class ClientKudeatzailea implements Runnable { // Cliente bakoitzak arian
     private Socket clientSocket;
     private BaliabidePartekatua bp;
     private int bid;
+    private List<Errezeta> errezetak;
     
-    public ClientKudeatzailea(Socket clientSocket,BaliabidePartekatua bp, int bid){
+    public ClientKudeatzailea(Socket clientSocket,BaliabidePartekatua bp, int bid, List<Errezeta> errezetak){
         this.clientSocket = clientSocket;
         this.bp = bp;
         this.bid =bid;
+        this.errezetak = errezetak;
     }
     
     
@@ -50,8 +53,8 @@ public class ClientKudeatzailea implements Runnable { // Cliente bakoitzak arian
                 switch(clientErantzuna){
                     case 1: // List                      
                         msgBidali.println("Errezeta lista:");
-                        for(int i = 0; i < bp.errezetak.size(); i++){
-                            String errezetaSrt = "" + i + "- " + bp.errezetak.get(i).getName() + "";
+                        for(int i = 0; i < errezetak.size(); i++){
+                            String errezetaSrt = "" + i + "- " + errezetak.get(i).getName() + "";
                             msgBidali.println(errezetaSrt);
                         }
                         
@@ -65,8 +68,8 @@ public class ClientKudeatzailea implements Runnable { // Cliente bakoitzak arian
                         msgBidali.println("Sartu bilatzeko errezeta izena: ");
                         String bilatuErrezeta = sarrearString.readLine();
                         
-                        for (Errezeta errezeta : bp.errezetak){
-                            if(errezeta.getName().equals(bilatuErrezeta)){
+                        for (Errezeta errezeta : errezetak){
+                            if(errezeta.getName().equalsIgnoreCase(bilatuErrezeta)){ // equalsIgnoreCase --> LowerCase eta UpperCase kontuan ez izateko
                                 msgBidali.println(errezeta);
                                 aurkitua = true;
                                 break;
@@ -81,15 +84,22 @@ public class ClientKudeatzailea implements Runnable { // Cliente bakoitzak arian
                         bp.getBezeroData(bid); // Bezeroaren egoera eguneratzeko
                         break;
                         
-                    case 3: // Put
-                        msgBidali.println("Sartu Errezeta berriaren izena: ");
+                    case 3: // Put <-- POST egiten zaiatzen egon nintzen
+                        boolean aurkituaErrezeta = false;
+
+                        msgBidali.println("Sartu aldatu nahi duzun Errezeta izena: ");
                         String nameErrezeta = sarrearString.readLine();
                         
-                        msgBidali.println("Sartu Errezeta berriaren edukia: ");
-                        String edukiaErrezeta = sarrearString.readLine();
+                        for (Errezeta errezeta : errezetak){
+                            if(errezeta.getName().equalsIgnoreCase(nameErrezeta)){
+                                aurkituaErrezeta = edukiaEguneratu(errezeta);
+                                break;
+                            }
+                        }                        
                         
-                        Errezeta errBerria = new Errezeta(nameErrezeta,edukiaErrezeta);
-                        bp.addErrezeta(errBerria);
+                        if(aurkituaErrezeta == false){
+                            msgBidali.println("Ez da errezeta existitzen");
+                        }
                         
                         bp.getkPut();
                         bp.getBezeroData(bid); // Bezeroaren egoera eguneratzeko
@@ -101,6 +111,7 @@ public class ClientKudeatzailea implements Runnable { // Cliente bakoitzak arian
                         bp.getBezeroData(bid); // Bezeroaren egoera eguneratzeko
                         clientSocket.close();
                         break;
+                        
                     default:
                         msgBidali.println("Aukera hori ez da posible");
                         break;
@@ -109,6 +120,26 @@ public class ClientKudeatzailea implements Runnable { // Cliente bakoitzak arian
         } catch (IOException ex) {
             System.getLogger(ClientKudeatzailea.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
+    }
+    
+    public synchronized boolean edukiaEguneratu(Errezeta errezeta){
+        try{
+            InputStream sarreraEdukia = clientSocket.getInputStream();
+            OutputStream irteeraEdukia = clientSocket.getOutputStream();
+            
+            BufferedReader sarrearString = new BufferedReader(new InputStreamReader(sarreraEdukia)); // Datozen mezuak irakurtzeko
+            PrintWriter  msgBidali = new PrintWriter(irteeraEdukia,true); // Mezuak bidaltzeko
+            
+            msgBidali.println("Sartu Errezetare edukia berria: ");
+            String edukiaErrezeta = sarrearString.readLine();
+
+            errezeta.setEdukia(edukiaErrezeta);
+            return true;
+        }catch(IOException ex){
+            System.getLogger(ClientKudeatzailea.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+
+        }
+        return false; // Errorea gertatu bada false itxuli egunerapena gertatu ez delako
     }
     
 }

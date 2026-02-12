@@ -16,12 +16,12 @@ public class BaliabidePartekatua  {
     private int kPut = 0;
     private int kQuit = 0;
 
-    public List<Errezeta> errezetak = new ArrayList<>();
+    /*public List<Errezeta> errezetak = new ArrayList<>(); // Hemendik kanpo egon behar da
     {
         errezetak.add(new Errezeta("Kroketa", "Bexamela eta buskentza"));
         errezetak.add(new Errezeta("Karbonara","Espagetiak, arrautza , guanciale eta gazta"));
         errezetak.add(new Errezeta("Kafesnea","Kafea eta esnea"));
-    }
+    }*/
             
     // Kontadoreak gehitzeko metodoak gehitu dira zuzenketa modura
     public synchronized int getkList(){
@@ -46,10 +46,6 @@ public class BaliabidePartekatua  {
     
     public synchronized void getBezeroData(int bezeId){
         System.out.println(bezeId+". bezeroa konektatu da:\nList: " + kList + " || Get: "+ kGet + " || Put: "+ kPut + " || Quit: "+ kQuit);
-    }
-    
-    public synchronized void addErrezeta(Errezeta newErrezeta){
-        errezetak.add(newErrezeta);
     }
     
     /*@Override
