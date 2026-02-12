@@ -27,8 +27,8 @@ public class ClientKudeatzailea implements Runnable { // Cliente bakoitzak arian
     @Override
     public void run()  {
         try {
-            bp.getId();
             bp.getBezeroData(); // Bezeroaren egoera eguneratzeko
+            bp.getId();
 
             InputStream sarrera = clientSocket.getInputStream();
             OutputStream irteera = clientSocket.getOutputStream();
@@ -57,20 +57,23 @@ public class ClientKudeatzailea implements Runnable { // Cliente bakoitzak arian
                         bp.getBezeroData(); // Bezeroaren egoera eguneratzeko
                         break;
                         
-                    case 2: // Get                      
+                    case 2: // Get   
+                        boolean aurkitua = false;
+                        
                         msgBidali.println("Sartu bilatzeko errezeta izena: ");
                         String bilatuErrezeta = sarrearString.readLine();
                         
                         for (Errezeta errezeta : bp.errezetak){
                             if(errezeta.getName().equals(bilatuErrezeta)){
                                 msgBidali.println(errezeta);
-                                bp.getkGet();
-                                bp.getBezeroData();
+                                aurkitua = true;
                                 break;
                             }
                         }                        
                         
-                        msgBidali.println("Ez da errezeta existitzen");
+                        if(aurkitua == false){
+                            msgBidali.println("Ez da errezeta existitzen");
+                        }
                         
                         bp.getkGet();
                         bp.getBezeroData(); // Bezeroaren egoera eguneratzeko
