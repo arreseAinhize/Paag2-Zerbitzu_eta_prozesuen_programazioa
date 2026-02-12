@@ -11,7 +11,6 @@ import java.util.*;
  * @author ainhi
  */
 public class BaliabidePartekatua  {
-    private int bId = 0;
     private int kList = 0;
     private int kGet = 0;
     private int kPut = 0;
@@ -23,11 +22,7 @@ public class BaliabidePartekatua  {
         errezetak.add(new Errezeta("Karbonara","Espagetiak, arrautza , guanciale eta gazta"));
         errezetak.add(new Errezeta("Kafesnea","Kafea eta esnea"));
     }
-        
-    public synchronized int getId(){
-        bId++;
-        return bId;
-    }
+            
     // Kontadoreak gehitzeko metodoak gehitu dira zuzenketa modura
     public synchronized int getkList(){
         kList = kList +1;
@@ -49,8 +44,12 @@ public class BaliabidePartekatua  {
         return kQuit;
     }
     
-    public synchronized void getBezeroData(){
-        System.out.println(bId+". bezeroa konektatu da:\nList: " + kList + " || Get: "+ kGet + " || Put: "+ kPut + " || Quit: "+ kQuit);
+    public synchronized void getBezeroData(int bezeId){
+        System.out.println(bezeId+". bezeroa konektatu da:\nList: " + kList + " || Get: "+ kGet + " || Put: "+ kPut + " || Quit: "+ kQuit);
+    }
+    
+    public synchronized void addErrezeta(Errezeta newErrezeta){
+        errezetak.add(newErrezeta);
     }
     
     /*@Override

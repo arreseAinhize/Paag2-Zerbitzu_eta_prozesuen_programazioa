@@ -16,7 +16,7 @@ public class Server {
      */
     public static void main(String[] args) {
         final int port = 11111;
-        
+        int bId = 0;
         try{
             InetAddress serverHost = InetAddress.getLocalHost();
             System.out.println("Zerbitzaria " + serverHost + ":" + port + " helbidean entzuten ari da.");
@@ -26,8 +26,8 @@ public class Server {
             while(true){
                 Socket clientSocket = serverSocket.accept();
                 BaliabidePartekatua bp = new BaliabidePartekatua();
-                
-                Thread haria = new Thread(new ClientKudeatzailea(clientSocket,bp));
+                bId++;
+                Thread haria = new Thread(new ClientKudeatzailea(clientSocket,bp,bId));
                 haria.start();
             }
         }catch(IOException ex){

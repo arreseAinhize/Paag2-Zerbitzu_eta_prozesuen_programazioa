@@ -17,18 +17,20 @@ public class ClientKudeatzailea implements Runnable { // Cliente bakoitzak arian
     
     private Socket clientSocket;
     private BaliabidePartekatua bp;
+    private int bid;
     
-    public ClientKudeatzailea(Socket clientSocket,BaliabidePartekatua bp){
+    public ClientKudeatzailea(Socket clientSocket,BaliabidePartekatua bp, int bid){
         this.clientSocket = clientSocket;
         this.bp = bp;
+        this.bid =bid;
     }
     
     
     @Override
     public void run()  {
         try {
-            bp.getBezeroData(); // Bezeroaren egoera eguneratzeko
-            bp.getId();
+            bp.getBezeroData(bid); // Bezeroaren egoera eguneratzeko
+
 
             InputStream sarrera = clientSocket.getInputStream();
             OutputStream irteera = clientSocket.getOutputStream();
@@ -54,7 +56,7 @@ public class ClientKudeatzailea implements Runnable { // Cliente bakoitzak arian
                         }
                         
                         bp.getkList();
-                        bp.getBezeroData(); // Bezeroaren egoera eguneratzeko
+                        bp.getBezeroData(bid); // Bezeroaren egoera eguneratzeko
                         break;
                         
                     case 2: // Get   
@@ -76,7 +78,7 @@ public class ClientKudeatzailea implements Runnable { // Cliente bakoitzak arian
                         }
                         
                         bp.getkGet();
-                        bp.getBezeroData(); // Bezeroaren egoera eguneratzeko
+                        bp.getBezeroData(bid); // Bezeroaren egoera eguneratzeko
                         break;
                         
                     case 3: // Put
@@ -87,16 +89,16 @@ public class ClientKudeatzailea implements Runnable { // Cliente bakoitzak arian
                         String edukiaErrezeta = sarrearString.readLine();
                         
                         Errezeta errBerria = new Errezeta(nameErrezeta,edukiaErrezeta);
+                        bp.addErrezeta(errBerria);
                         
-                        bp.errezetak.add(errBerria);
                         bp.getkPut();
-                        bp.getBezeroData(); // Bezeroaren egoera eguneratzeko
+                        bp.getBezeroData(bid); // Bezeroaren egoera eguneratzeko
                         break;
                         
                     case 4: // Quit
                         bp.getkQuit(); 
                         msgBidali.println("Agur!");
-                        bp.getBezeroData(); // Bezeroaren egoera eguneratzeko
+                        bp.getBezeroData(bid); // Bezeroaren egoera eguneratzeko
                         clientSocket.close();
                         break;
                     default:
